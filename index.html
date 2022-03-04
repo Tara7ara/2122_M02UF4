@@ -13,20 +13,31 @@
 </header>
 
 <main>
-
-<article>
-<section>
-<p> </p>
+<section id="characters">
+	<ul id="characters-list">
+	
+	</ul>
 </section>
-</article>
-
 </main>
+<script>
+function write_characters_list (data){
+	let list = "";
+	for (let i =0; i < data.length; i++){
+		list += "<li>"+data[i].name+"</li>";
+	}
 
-<footer>
-<p>Pie de pagina</p>
-</footer>
+	document.getElementById("characters-list").innerHTML = list;
 
+}
 
+//solo puedes usar el fetch en el script igual que los comentarios
+let characters_interval = setInterval(function(){
+
+	fetch("/characters")
+		.then(response => response.json())
+		.then(data => write_characters_list(data));
+},2000);
+</script>
 
 </body>
 
