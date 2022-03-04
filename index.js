@@ -1,12 +1,15 @@
 #!/usr/bin/node
 
 let http = require("http");
+let fs = require ("fs");
 
 let mongo_client = require("mongodb").MongoClient;
 
-let url = ("mongodb://localhost/");
+let url = "mongodb://localhost/";
 
-console.log("iniciando script mongo-http");
+let db;
+
+console.log("Iniciando script mongo-http");
 
 mongo_client.connect(url, function(error, conn){
 	console.log("Dentro de MongoDB");
@@ -16,25 +19,42 @@ mongo_client.connect(url, function(error, conn){
 		return;
 	}
 
-	let db = conn.db("tffhd");
-
-	let characters = db.collection("characters").find();
-
-	console.log(characters);
-
-	
+	db = conn.db("tffhd");
 
 });
 
-/*
+
 
 http.createServer(function(req, res){
 	res.writeHead(200);
 
-		let saludo = "<h1>ola k ase</h1>";
+	if (req.url == "/"){
+		fs.readFile("index.html", function (err, data) {
+			res.writeHead(200, {"Content-Type": "text/html"});
+			res.end(data);
+		});
+		
+		return;
+	}
 
-	res.end(saludo);
+	let col = "";
+
+	if (req.url == "/characters")
+		col = "characters";
+	else if (req.url == "/items")
+		col = "items";
+	else{
+		res.end();
+		return;
+	}
+
+	let col_data = db.collection(col).find();
+
+	col_data.toArray(function(err, data){
+		let string = JSON.stringify(data);
+
+		res.end(string);
+	});
+
 
 }).listen(1095);
-
-*/
