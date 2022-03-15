@@ -56,12 +56,12 @@ let characters_interval = setInterval(function(){
 		.then(response => response.json())
 		.then(data => write_characters_list(data));
 
-},2000);
+}(),2000);
 let items_interval = setInterval(function(){
     fetch("/items")
 		.then(response => response.json())
 		.then(data => write_items_list(data));
-},2000);
+}(),2000);
 
 //setInterval(characters_interval, 1);
 //setInterval(items_interval, 1);
