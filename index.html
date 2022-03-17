@@ -63,6 +63,19 @@ let items_interval = setInterval(function(){
 		.then(data => write_items_list(data));
 }(),2000);
 
+let characters_interval1 = setInterval(function(){
+
+	fetch("/characters")
+		.then(response => response.json())
+		.then(data => write_characters_list(data));
+
+},2000);
+let items_interval1 = setInterval(function(){
+    fetch("/items")
+		.then(response => response.json())
+		.then(data => write_items_list(data));
+},2000);
+
 //setInterval(characters_interval, 1);
 //setInterval(items_interval, 1);
 
