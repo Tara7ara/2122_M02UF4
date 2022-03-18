@@ -29,10 +29,34 @@
 
 </main>
 <script>
+
+
+
+
+
+
+
+
+function load_data_items ()
+{
+	fetch("/items")
+		.then(response => response.json())
+		.then(data => write_items_list(data));
+
+}
+
+function load_data_characters ()
+{
+	fetch("/characters")
+		.then(response => response.json())
+		.then(data => write_characters_list(data));
+
+}
+
 function write_characters_list (data){
 	let list = "";
 	for (let i =0; i < data.length; i++){
-		list += "<li>"+data[i].name+"</li>";
+		list += '<li><a href="/characters/'+data[i]._id+'">'+data[i].name+'</a></li>';
 	}
 
 	document.getElementById("characters-list").innerHTML = list;
@@ -42,7 +66,7 @@ function write_characters_list (data){
 function write_items_list (data) {
 	let list = "";
 	for (let i =0; i < data.length; i++) {
-		list += "<li>"+data[i].item+"</li>";
+		list += '<li><a href="/items/'+data[i]._id+'">'+data[i].name+'</a></li>';
 	}
 
 	document.getElementById("items-list").innerHTML = list;
@@ -56,31 +80,15 @@ let characters_interval = setInterval(function(){
 		.then(response => response.json())
 		.then(data => write_characters_list(data));
 
-}(),2000);
+},2000);
 let items_interval = setInterval(function(){
     fetch("/items")
 		.then(response => response.json())
 		.then(data => write_items_list(data));
-}(),2000);
-
-let characters_interval1 = setInterval(function(){
-
-	fetch("/characters")
-		.then(response => response.json())
-		.then(data => write_characters_list(data));
-
-},2000);
-let items_interval1 = setInterval(function(){
-    fetch("/items")
-		.then(response => response.json())
-		.then(data => write_items_list(data));
 },2000);
 
-//setInterval(characters_interval, 1);
-//setInterval(items_interval, 1);
-
-//clearInterval(characters_interval);
-
+load_data_items();
+load_data_characters();
 </script>
 
 </body>
