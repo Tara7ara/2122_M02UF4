@@ -1,17 +1,13 @@
 #!/usr/bin/node
 
 let http = require("http");
-let fs = require("fs");
-
 let mongo_client = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectID;
 
-
 let url = "mongodb://localhost/";
-
 let db;
-
-console.log("Iniciando script mongo-http");
+let fs = require("fs");
+console.log("Iniciando Script mongo_http");
 
 mongo_client.connect(url, function(error, conn){
 	console.log("Dentro de MongoDB");
@@ -39,7 +35,7 @@ function send_data_list (db, req, res)
 		return;
 	}
 
-	let col_data = db.collection(col).find({}, { projection: { name:1 } });
+	let col_data = db.collection(col).find({}, { projection: { name:1, item:1 } });
 
 	col_data.toArray(function(err, data){
 		let string = JSON.stringify(data);
@@ -79,17 +75,24 @@ http.createServer(function(req, res){
 	if (url[1] == "characters"){
 		let obj_id = new ObjectId(url[2]);
 
-		let col_data = db.collection("characters").find({"_id":obj_id});
+		let col_data = db.collection("characters").find({"_id":obj_id},{projection: {_id:1, name:1}});
 
 		col_data.toArray(function(err, data){
 			let string = JSON.stringify(data);
 
 			res.end(string);
+//			re("http");
 		});
 	}
 	else if (url[1] == "items") {
+		let obj_id = new ObjectId(url[2]);
 
-	}
+		let col_data = db.collection("items").find({"_id":obj_id},{projection: {_id:1, item:1}});
+
+		col_data.toArray(function(err, data){
+			let string = JSON.stringify(data);
+
+			res.end(string);
+	});
+}
 }).listen(1095);
-
-
