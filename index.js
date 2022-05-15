@@ -1,13 +1,17 @@
 #!/usr/bin/node
 
 let http = require("http");
+let fs = require("fs");
+
 let mongo_client = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectID;
 
+
 let url = "mongodb://localhost/";
+
 let db;
-let fs = require("fs");
-console.log("Iniciando Script mongo_http");
+
+console.log("Iniciando script mongo-http");
 
 mongo_client.connect(url, function(error, conn){
 	console.log("Dentro de MongoDB");
@@ -35,7 +39,8 @@ function send_data_list (db, req, res)
 		return;
 	}
 
-	let col_data = db.collection(col).find({}, { projection: { name:1, item:1 } });
+//	let col_data = db.collection(col).find({}, { projection: { name:1 } });
+	let col_data = db.collection(col).find({});
 
 	col_data.toArray(function(err, data){
 		let string = JSON.stringify(data);
@@ -67,32 +72,33 @@ http.createServer(function(req, res){
 		return;
 	}
 
+/*
 	if (url[2].length != 24){
 		res.end();
 		return;
 	}
-
+*/
 	if (url[1] == "characters"){
 		let obj_id = new ObjectId(url[2]);
 
-		let col_data = db.collection("characters").find({"_id":obj_id},{projection: {_id:1, name:1}});
+		let col_data = db.collection("characters").find({"_id":obj_id});
 
 		col_data.toArray(function(err, data){
 			let string = JSON.stringify(data);
 
 			res.end(string);
-//			re("http");
 		});
 	}
 	else if (url[1] == "items") {
-		let obj_id = new ObjectId(url[2]);
 
-		let col_data = db.collection("items").find({"_id":obj_id},{projection: {_id:1, item:1}});
+	}
+	else if (url[1] == "removeC") {
+		db.collection("characters").deleteOne({"id_character":parseInt(url[2])});
+		res.end("CHARACTER BORRADO");
+	}
+	else if (url[1] == "delete"){
+		db.collection("items").deleteOne({"id_item":parseInt(url[2])});
+		res.end("ITEM ELIMINADO");
+	}
 
-		col_data.toArray(function(err, data){
-			let string = JSON.stringify(data);
-
-			res.end(string);
-	});
-}
 }).listen(1095);

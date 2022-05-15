@@ -39,7 +39,8 @@ let list;
 			function charactersLoad(data) {
 				list = "";
 				for(let i=0; i<data.length; i++) {
-					list += "<li><a href=\"/characters/"+data[i]._id+"\">"+data[i].name+"</a></li>";
+					list += '<li><a href="/characters/'+data[i]._id+'">'+data[i].name+'</a> ';
+					list += '<a href="/removeC/'+data[i].id_character+'">X</a></li>';
 				}
 				document.getElementById("characters-list").innerHTML = list;
 			}
@@ -57,7 +58,8 @@ let list;
 			function itemsLoad(data) {
 				list = "";
 				for(let i=0; i<data.length; i++) {
-				list += "<li><a href=\"/items/"+data[i]._id+"\">"+data[i].item+"</a></li>";
+				list += '<li><a href="/items/'+data[i]._id+'">'+data[i].name+'</a>';
+				list += '<a href="/delete/'+data[i].id_item+'">X</a></li>';
 				}
 				document.getElementById("items-list").innerHTML = list;
 			}
