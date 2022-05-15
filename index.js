@@ -90,7 +90,12 @@ http.createServer(function(req, res){
 		});
 	}
 	else if (url[1] == "items") {
-
+		let obj_id = new ObjectId(url[2]);
+		let col_data = db.collection("items").find({"_id":obj_id},{projection: {_id:1, item:1} });
+		col_data.toArray(function(err, data){
+			let string = JSON.stringify(data);
+			res.end(string);
+		});
 	}
 	else if (url[1] == "removeC") {
 		db.collection("characters").deleteOne({"id_character":parseInt(url[2])});

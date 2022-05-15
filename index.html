@@ -58,8 +58,8 @@ let list;
 			function itemsLoad(data) {
 				list = "";
 				for(let i=0; i<data.length; i++) {
-				list += '<li><a href="/items/'+data[i]._id+'">'+data[i].name+'</a>';
-				list += '<a href="/delete/'+data[i].id_item+'">X</a></li>';
+				list += '<li><a href="/items/'+data[i]._id+'">'+data[i].item+'</a>	';
+					list += '<a href="/removeItem/'+data[i].id_item+'">X</a></li>';
 				}
 				document.getElementById("items-list").innerHTML = list;
 			}
